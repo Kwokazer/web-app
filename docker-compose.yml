@@ -1,0 +1,40 @@
+
+services:
+  amonic:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/amonic
+    environment:
+      - DB_HOST=database
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASS=pass
+      - REDIS_HOST=redis
+      - REDIS_PORT=6370
+
+    command: python manage.py runserver 0.0.0.0:8000
+
+    depends_on:
+      - database
+
+  database:
+    container_name: my_db
+    hostname: dbname
+    image: postgres:14.6-alpine
+    environment:
+      - POSTGRES_DB=dbname
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: noemail@noemail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"

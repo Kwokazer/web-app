@@ -10,13 +10,12 @@ class Roles(models.Model):
 class Users(models.Model):
     id = models.AutoField(primary_key=True)
     office_id = models.ForeignKey(
-        'Office',  # Замените 'Office' на имя вашей модели для офиса
+        'Office',  
         on_delete=models.CASCADE,
     )
     role = models.ForeignKey(Roles, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)  # Не забудьте об использовании хэширования пароля!
-    firstname = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     birthdate = models.DateField()
     active = models.BooleanField(default=True)

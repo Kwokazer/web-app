@@ -9,32 +9,29 @@ services:
       - .:/amonic
     environment:
       - DB_HOST=database
-      - DB_NAME=dbname
-      - DB_USER=dbuser
+      - DB_NAME=my_database
+      - DB_USER=my_user
       - DB_PASS=pass
-      - REDIS_HOST=redis
-      - REDIS_PORT=6370
 
     command: python manage.py runserver 0.0.0.0:8000
 
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   database:
-    container_name: my_db
     hostname: dbname
-    image: postgres:14.6-alpine
+    image: mysql:8
     environment:
-      - POSTGRES_DB=dbname
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_HOST_AUTH_METHOD=trust
+      MYSQL_DATABASE: 'my_database'
+      MYSQL_USER: 'my_user'
+      MYSQL_PASSWORD: 'pass'
+      MYSQL_ROOT_PASSWORD: 'rootpass'
+    volumes:
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
     ports:
-      - "5432:5432"
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: noemail@noemail.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "5050:80"
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 160

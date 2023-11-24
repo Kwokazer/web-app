@@ -8,12 +8,14 @@ COPY . .
 
 RUN pip install --upgrade pip
 
+RUN apk update
+RUN apk add build-base mysql-dev
+RUN apk add mysql-client
 #RUN apk add libffi-dev openssl-dev cargo
 RUN pip install -r requirements.txt
-
 EXPOSE 8000
 
-RUN apk add postgresql-client build-base postgresql-dev
+#RUN apk add postgresql-client build-base postgresql-dev
 
 RUN adduser --disabled-password artem
 

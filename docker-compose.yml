@@ -29,6 +29,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'rootpass'
     volumes:
       - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+#      - ./UserData.csv:/docker-entrypoint-initdb.d/init_data
     ports:
       - "3306:3306"
     healthcheck:

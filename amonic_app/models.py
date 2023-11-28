@@ -5,6 +5,7 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from django.contrib.auth.models import AbstractUser, User
 from django.db import models
 
 
@@ -30,7 +31,7 @@ class Offices(models.Model):
 
 
 class Roles(models.Model):
-    id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=50)  # Field name made lowercase.
 
     class Meta:
@@ -39,7 +40,7 @@ class Roles(models.Model):
 
 
 class Users(models.Model):
-    id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     roleid = models.ForeignKey(Roles, models.DO_NOTHING, db_column='RoleID')  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=150)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=50)  # Field name made lowercase.
